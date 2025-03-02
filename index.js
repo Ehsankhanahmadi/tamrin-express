@@ -39,12 +39,27 @@ app.use((req , res , next) => {
   console.log(`${req.url} , ${req.method} , ${end}`)
 })
 
+// in midllwer tamam req hara beh format json tabdil mikonad keh khoob ast
+app.use(express.json())
+
 app.get("/", (req, res) => {
   res.send("hi express");
 });
 
 app.get('/data', (req , res) => {
     res.send(data)
+})
+
+app.post('/data', (req , res) => {
+  if(!req.body.name){
+    return res.status(400).json({error:"name not add"})
+  }
+  const newdata = {
+    id:data.length,
+    name:req.body.name
+  }
+  data.push(newdata)
+  res.json(newdata)
 })
 
 app.get('/data/:ID', (req , res) => {
