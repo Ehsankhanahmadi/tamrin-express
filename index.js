@@ -62,6 +62,18 @@ app.post('/data', (req , res) => {
   res.json(newdata)
 })
 
+app.put('/data/:ID',(req , res) => {
+  const onedata = data[parseFloat(req.params.ID)]
+  if(!onedata){
+    return res.status(404).json({error:"data not found"})
+  }
+  if(!req.body.name){
+    return res.json({error:"data not add"})
+  }
+  onedata.name = req.body.name
+  res.json(onedata)
+})
+
 app.get('/data/:ID', (req , res) => {
     const id = req.params.ID
     if(data[id])
