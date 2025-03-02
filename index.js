@@ -30,6 +30,15 @@ let data = [
   },
 ];
 
+// useing middlwer
+// node bad az har darkhast sari tar amal mikonad
+app.use((req , res , next) => {
+  const start = Date.now()
+  next()
+  const end = Date.now() - start
+  console.log(`${req.url} , ${req.method} , ${end}`)
+})
+
 app.get("/", (req, res) => {
   res.send("hi express");
 });
