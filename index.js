@@ -1,7 +1,9 @@
 const express = require("express");
+const path = require("node:path")
 const app = express();
 const PORT = 2025;
-const {homerouter , datarouter , imgrouter} = require('./routers')
+const {homerouter , datarouter , imgrouter} = require('./routers');
+const { title } = require("node:process");
 
 // useing middlwer
 // node bad az har darkhast sari tar amal mikonad
@@ -13,6 +15,18 @@ app.use((req, res, next) => {
   console.log(`${req.url} , ${req.method} , ${end}`);
 })
 app.use(express.json())
+
+// app.use("/site", express.static("./public/index.html"))
+app.use("/site", express.static(path.join(__dirname,"public")))
+// dynamic on ham paiini ast
+app.set("view engine",'hbs')
+app.set("views","views")
+app.get("/site", (req , res) => {
+  res.render('index',{
+    title:"title test",
+    caption:"this is a caption"
+  })
+})
 
 app.use('/',homerouter)
 app.use('/data',datarouter)
