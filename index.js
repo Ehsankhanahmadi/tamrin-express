@@ -1,96 +1,41 @@
 const express = require("express");
 const app = express();
 const PORT = 2025;
+const {
+  homepage,
+  getData,
+  getIdData,
+  postData,
+  putIdData,
+  deleteIdData,
+} = require("./controllers");
+
+// useing middlwer
+// node bad az har darkhast sari tar amal mikonad
+// in midllwer tamam req hara beh format json tabdil mikonad keh khoob ast
+app.use((req, res, next) => {
+  const start = Date.now();
+  next();
+  const end = Date.now() - start;
+  console.log(`${req.url} , ${req.method} , ${end}`);
+})
+app.use(express.json())
 
 // express khode ststuse code hara ersal mikonad
 // 404 khodcar darad
 // content-type ha ra khodash tashkhis midahad
 // keili az carhara rahat mikonad
+app.get("/", homepage);
 
-let data = [
-  {
-    id: 0,
-    name: "ehsan",
-    lastname: "khan",
-  },
-  {
-    id: 1,
-    name: "ehsan",
-    lastname: "khan",
-  },
-  {
-    id: 2,
-    name: "ehsan",
-    lastname: "khan",
-  },
-  {
-    id: 3,
-    name: "ehsan",
-    lastname: "khan",
-  },
-];
+app.get("/data" , getData);
 
-// useing middlwer
-// node bad az har darkhast sari tar amal mikonad
-app.use((req , res , next) => {
-  const start = Date.now()
-  next()
-  const end = Date.now() - start
-  console.log(`${req.url} , ${req.method} , ${end}`)
-})
+app.get("/data/:ID" , getIdData);
 
-// in midllwer tamam req hara beh format json tabdil mikonad keh khoob ast
-app.use(express.json())
+app.post("/data" , postData);
 
-app.get("/", (req, res) => {
-  res.send("hi express");
-});
+app.put("/data/:ID" , putIdData);
 
-app.get('/data', (req , res) => {
-    res.send(data)
-})
-
-app.post('/data', (req , res) => {
-  if(!req.body.name){
-    return res.status(400).json({error:"name not add"})
-  }
-  const newdata = {
-    id:data.length,
-    name:req.body.name
-  }
-  data.push(newdata)
-  res.json(newdata)
-})
-
-app.put('/data/:ID',(req , res) => {
-  const onedata = data[parseFloat(req.params.ID)]
-  if(!onedata){
-    return res.status(404).json({error:"data not found"})
-  }
-  if(!req.body.name){
-    return res.json({error:"data not add"})
-  }
-  onedata.name = req.body.name
-  res.json(onedata)
-})
-
-app.delete("/data/:ID",(req , res) => {
-  const iddata = data.find(q => q.id === parseInt(req.params.ID))
-  if(!iddata){
-    return res.status(404).json({error:"can not find data"})
-  }
-  const index = data.indexOf(iddata)
-  data.splice(index,1)
-  res.send(iddata)
-})
-
-app.get('/data/:ID', (req , res) => {
-    const id = req.params.ID
-    if(data[id])
-        res.send(data[id])
-    else
-        res.sendStatus(404)
-})
+app.delete("/data/:ID" , deleteIdData);
 
 app.listen(PORT, () => {
   console.log(`
