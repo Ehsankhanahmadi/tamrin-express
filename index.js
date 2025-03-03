@@ -74,6 +74,16 @@ app.put('/data/:ID',(req , res) => {
   res.json(onedata)
 })
 
+app.delete("/data/:ID",(req , res) => {
+  const iddata = data.find(q => q.id === parseInt(req.params.ID))
+  if(!iddata){
+    return res.status(404).json({error:"can not find data"})
+  }
+  const index = data.indexOf(iddata)
+  data.splice(index,1)
+  res.send(iddata)
+})
+
 app.get('/data/:ID', (req , res) => {
     const id = req.params.ID
     if(data[id])
