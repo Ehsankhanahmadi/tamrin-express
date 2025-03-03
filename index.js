@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 2025;
-const {homerouter , datarouter} = require('./routers')
+const {homerouter , datarouter , imgrouter} = require('./routers')
 
 // useing middlwer
 // node bad az har darkhast sari tar amal mikonad
@@ -16,6 +16,7 @@ app.use(express.json())
 
 app.use('/',homerouter)
 app.use('/data',datarouter)
+app.use('/img',imgrouter)
 
 app.listen(PORT, () => {
   console.log(`
