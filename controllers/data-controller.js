@@ -27,16 +27,13 @@ async function postData(req, res) {
   res.json(result);
 }
 
-function putIdData(req, res) {
-  const onedata = data[parseFloat(req.params.ID)];
-  if (!onedata) {
-    return res.status(404).json({ error: "data not found" });
-  }
-  if (!req.body.name) {
-    return res.json({ error: "data not add" });
-  }
-  onedata.name = req.body.name;
-  res.json(onedata);
+async function putIdData(req, res) {
+  const putid = req.params.ID
+  const putData = await mainData.findByIdAndUpdate(putid,{$set:{
+    firstName:req.body.firstName,
+    lastName:req.body.lastName
+  }},{new:true})
+  res.send(putData)
 }
 
 function deleteIdData(req, res) {

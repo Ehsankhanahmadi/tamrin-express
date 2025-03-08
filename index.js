@@ -7,12 +7,12 @@ const {homerouter , datarouter , imgrouter} = require('./routers');
 // useing middlwer
 // node bad az har darkhast sari tar amal mikonad
 // in midllwer tamam req hara beh format json tabdil mikonad keh khoob ast
-app.use((req, res, next) => {
-  const start = Date.now();
-  next();
-  const end = Date.now() - start;
-  console.log(`${req.url} , ${req.method} , ${end}`);
-})
+// app.use((req, res, next) => {
+//   const start = Date.now();
+//   next();
+//   const end = Date.now() - start;
+//   console.log(`${req.url} , ${req.method} , ${end}`);
+// })
 app.use(express.json())
 // app.use("/site", express.static("./public/index.html"))
 app.use("/site", express.static(path.join(__dirname,"public")))
