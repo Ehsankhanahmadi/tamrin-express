@@ -1,25 +1,30 @@
-const { data } = require("../models/data.model");
-
-function getData(req, res) {
-  res.send(data);
+const { mainData } = require("../models/data.model");
+ 
+async function getData(req, res) {
+  const allData = await mainData.find() 
+  res.send(allData);
 }
 
-function getIdData(req, res) {
+async function getIdData(req, res) {
   const id = req.params.ID;
-  if (data[id]) res.send(data[id]);
-  else res.sendStatus(404);
+  const idData = await mainData.findById(id)
+  if(!idData) 
+    res.status(400).json({ error: "can not find id" })
+  else
+    res.send(idData)
 }
 
-function postData(req, res) {
-  if (!req.body.name) {
-    return res.status(400).json({ error: "name not add" });
+async function postData(req, res) {
+  if (!req.body.firstName && !req.body.lastName) {
+    return res.status(400).json({ error: "name and lastname not add" });
   }
-  const newdata = {
-    id: data.length,
-    name: req.body.name,
-  };
-  data.push(newdata);
-  res.json(newdata);
+  let newdata = new mainData({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+  });
+  let result = await newdata.save()
+
+  res.json(result);
 }
 
 function putIdData(req, res) {
