@@ -36,14 +36,10 @@ async function putIdData(req, res) {
   res.send(putData)
 }
 
-function deleteIdData(req, res) {
-  const iddata = data.find((q) => q.id === parseInt(req.params.ID));
-  if (!iddata) {
-    return res.status(404).json({ error: "can not find data" });
-  }
-  const index = data.indexOf(iddata);
-  data.splice(index, 1);
-  res.send(iddata);
+async function deleteIdData(req, res) {
+  const dalateid = req.params.ID
+  const deleteData = await mainData.findByIdAndDelete(dalateid)
+  res.send(deleteData)
 }
 
 module.exports = {
